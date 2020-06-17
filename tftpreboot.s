@@ -25,11 +25,11 @@ _start:
   mov     x3, #0xb880            // x3 = lower 16 bits of Mailbox Peripheral Address.
   movk    x3, #0x3f00, lsl #16   // x3 = 0x3f00b880 (Mailbox Peripheral Address)
 1:                               // Wait for mailbox FULL flag to be clear.
-  ldr     w4, [x3, 0x118]        // w4 = mailbox status.
+  ldr     w4, [x3, 0x18]         // w4 = mailbox status.
   tbnz    w4, #31, 1b            // If FULL flag set (bit 31), try again...
   str     w2, [x3, 0x20]         // Write request address / channel number to mailbox write register.
 2:                               // Wait for mailbox EMPTY flag to be clear.
-  ldr     w4, [x3, 0x118]        // w4 = mailbox status.
+  ldr     w4, [x3, 0x18]         // w4 = mailbox status.
   tbnz    w4, #30, 2b            // If EMPTY flag set (bit 30), try again...
   ldr     w4, [x3]               // w4 = message request address + channel number.
   cmp     w2, w4                 // See if the message is for us.
